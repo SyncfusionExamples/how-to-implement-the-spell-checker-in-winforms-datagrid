@@ -38,6 +38,10 @@ public class GridSpellCheckColumn : GridTextColumn
 }
 
 ```
+
+![Spell Checker implemented in SfDataGrid GridCell](SpellChecker.gif)
+
+
 ## Requirements to run the demo
 Visual Studio 2015 and above versions
 
