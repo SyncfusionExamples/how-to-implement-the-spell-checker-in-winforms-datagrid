@@ -1,9 +1,8 @@
-# How to implement the spell checker in WinForms DataGrid (SfDataGrid)?
+# How to Implement the Spell Checker in WinForms DataGrid?
 
-## About the sample
-This example illustrates how to implement the spell checker in WinForms DataGrid (SfDataGrid)
+This example illustrates how to implement the spell checker in [WinForms DataGrid](https://www.syncfusion.com/winforms-ui-controls/datagrid) (SfDataGrid).
 
-By default, [SfDataGrid](https://help.syncfusion.com/cr/cref_files/windowsforms/Syncfusion.SfDataGrid.WinForms~Syncfusion.WinForms.DataGrid.SfDataGrid.html) does not provide the support for spell checker in GridCell. You can underline or highlight misspelled words within a cell from a [SfDataGrid](https://help.syncfusion.com/cr/cref_files/windowsforms/Syncfusion.SfDataGrid.WinForms~Syncfusion.WinForms.DataGrid.SfDataGrid.html) by creating the custom column like **GridSpellCheckColumn** and **SpellCheckCellRenderer** for checking the GridCell text in [SfDataGrid](https://help.syncfusion.com/cr/cref_files/windowsforms/Syncfusion.SfDataGrid.WinForms~Syncfusion.WinForms.DataGrid.SfDataGrid.html).
+By default, `DataGrid` does not provide the support for spell checker in `GridCell`. You can underline or highlight misspelled words within a cell from a `DataGrid` by creating the custom column like **GridSpellCheckColumn** and **SpellCheckCellRenderer** for checking the `GridCell` text in `DataGrid`.
 
 ```C#
 
@@ -11,37 +10,34 @@ this.sfDataGrid1.CellRenderers.Add("SpellCheck", new SpellCheckCellRenderer(this
 
 public class SpellCheckCellRenderer : GridTextBoxCellRenderer
 {
-        //Using SpellChecker tool.
-        private SpellCheckerAdv spellchecker;
-        public SpellCheckCellRenderer(SfDataGrid sfdataGrid)
+    //Using SpellChecker tool.
+    private SpellCheckerAdv spellchecker;
+
+    public SpellCheckCellRenderer(SfDataGrid sfdataGrid)
+    {
+        spellchecker = new SpellCheckerAdv();
+    }
+
+    protected override void OnRender(Graphics paint, Rectangle cellRect, string cellValue, CellStyleInfo style, DataColumnBase column, RowColumnIndex rowColumnIndex)
+    {
+        string check = this.spellchecker.SpellCheck(cellValue.ToString());
+        //Checking whether the result has suggestions.
+        if (check != "")
         {
-            spellchecker = new SpellCheckerAdv();
+            style.Font.Underline = true;
         }
-        protected override void OnRender(Graphics paint, Rectangle cellRect, string cellValue, CellStyleInfo style, DataColumnBase column, RowColumnIndex rowColumnIndex)
-        {
-            string check = this.spellchecker.SpellCheck(cellValue.ToString());
-            //Checking whether the result has suggestions.
-            if (check != "")
-            {
-                style.Font.Underline = true;
-            }
-            base.OnRender(paint, cellRect, cellValue, style, column, rowColumnIndex);
-        }
+        base.OnRender(paint, cellRect, cellValue, style, column, rowColumnIndex);
+    }
 }
 
 public class GridSpellCheckColumn : GridTextColumn
 {
-        public GridSpellCheckColumn()
-        {
-            SetCellType("SpellCheck");
-        }
+    public GridSpellCheckColumn()
+    {
+        SetCellType("SpellCheck");
+    }
 }
 
 ```
 
 ![Spell Checker implemented in SfDataGrid GridCell](SpellChecker.gif)
-
-
-## Requirements to run the demo
-Visual Studio 2015 and above versions
-
